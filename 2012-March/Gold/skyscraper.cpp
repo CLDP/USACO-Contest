@@ -30,27 +30,6 @@ int main() {
             if (temp - f[j] <= W) f[j] = temp;
         }
         
-        for (int j = 1; j < N; ++j) {
-            vector<int> t(N - j, 0);
-            for (int k = 0; k < j; ++k) t.push_back(1);
-            int begin = 0;
-            for (int k = 0; k < N; ++k) begin += t[k] * (1 << k);
-            
-            while (true) {
-                next_permutation(t.begin(), t.end());
-                int a = 0;
-                for (int k = 0; k < N; ++k) a += t[k] * (1 << k);
-                if (a == begin) break;
-                for (int k = 0; k < N; ++k) {
-                    if (t[k] == 1) continue;
-                    if (f[a] > f[a + (1 << k)]) {
-                        f[a + (1 << k)] = f[a];
-                        fa[a + (1 << k)] = a;
-                    }
-                }
-            }
-        }
-        
         if (f[(1 << N) - 1] == cal((1 << N) - 1)) {
             cout << i << endl;
             int a = (1 << N) - 1;
@@ -67,6 +46,32 @@ int main() {
                 a = b;
             }
             break;
+        }
+        
+        for (int j = 1; j < N; ++j) {
+            vector<int> t(N - j, 0);
+            for (int k = 0; k < j; ++k) t.push_back(1);
+            int begin = 0;
+            for (int k = 0; k < N; ++k) begin += t[k] * (1 << k);
+            
+            while (true) {
+                next_permutation(t.begin(), t.end());
+                int a = 0;
+                for (int k = 0; k < N; ++k) a += t[k] * (1 << k);
+                if (a == begin) break;
+                for (int k = 0; k < N; ++k) {
+                    if (t[k] == 1) continue;
+                    int now = a + (1 << k);
+                    if (f[a] > f[now]) {
+                        f[now] = f[a];
+                        int b = a;
+                        while (f[now] == f[b]) {
+                            fa[now] = b;
+                            b = fa[b];
+                        }
+                    }
+                }
+            }
         }
     }
     
