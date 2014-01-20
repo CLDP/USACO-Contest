@@ -39,5 +39,7 @@ int main() {
     } while (y != sy || x != sx);
 
     cout << ans << endl;
+    
+    return 0;
 }
 
